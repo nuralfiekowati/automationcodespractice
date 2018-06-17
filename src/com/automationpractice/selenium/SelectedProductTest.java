@@ -5,42 +5,32 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.Iterator;
+import java.util.ArrayList;
+//import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
-class BrokenLinksTest {
+class SelectedProductTest {
 
 	String url = "";
 	HttpURLConnection con = null;
 	int respnsCode = 200;
 
-	public void findInvalidLinks(WebDriver driver) {
+	public void findValidProductLink(WebDriver driver) {
 
-		List<WebElement> linksList = driver.findElements(By.tagName("a"));
-
-		System.out.println("Total number of links : " + linksList.size());
-
-		Iterator<WebElement> it = linksList.iterator();
-
-		while (it.hasNext()) {
-
-			url = it.next().getAttribute("href");
-			System.out.println(url);
-
-			if (url.isEmpty() || url == null) {
-
-				System.out.println("URL is either empty or not configured for the anchor tag.");
-
-				continue;
-
-			}
-
-			toConnect();
-
+		List<WebElement> productList = driver.findElements(By.className("product_img_link"));
+		// Iterator<WebElement> it = productList.iterator();
+		List<WebElement> visited = new ArrayList<WebElement>();
+		WebElement random = productList.get(new Random().nextInt(productList.size()));
+		if (!visited.contains(random)) {
+			random.click();
+			System.out.println("Product has been clicked correctly.");
+			visited.add(random);
+			driver.navigate().back();
 		}
 	}
 
